@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pickle
 import docx
@@ -127,8 +126,7 @@ def extract_text_from_pdf(file):
                 extracted = page.extract_text()
                 if extracted:
                     text += extracted + '\n'
-            except Exception as e:
-                st.warning(f"⚠️ Could not extract text from page {i + 1}")
+            except Exception:
                 continue
         
         # If no text extracted and OCR is available, try OCR
@@ -270,38 +268,6 @@ def main():
                     
                     if not resume_text or not resume_text.strip():
                         st.error("❌ Could not extract text from the file.")
-                        
-                        if not OCR_AVAILABLE:
-                            st.warning("""
-                            **This appears to be a scanned PDF!**
-                            
-                            To process scanned PDFs, install OCR libraries:
-                            ```
-                            pip install pdf2image pytesseract Pillow
-                            ```
-                            
-                            Also install Tesseract-OCR:
-                            - **Windows**: Download from https://github.com/UB-Mannheim/tesseract/wiki
-                            - **Mac**: `brew install tesseract`
-                            - **Linux**: `sudo apt-get install tesseract-ocr`
-                            
-                            **Alternative solutions:**
-                            - Convert PDF to Word (.docx) first
-                            - Copy-paste text into a .txt file
-                            - Use an online OCR tool first
-                            """)
-                        else:
-                            st.warning("""
-                            **Possible reasons:**
-                            - The file is corrupted
-                            - The file is empty
-                            - The file is password-protected
-                            
-                            **Try:**
-                            - Re-download/re-save the PDF
-                            - Convert to Word (.docx) format
-                            - Save as plain text (.txt)
-                            """)
                     else:
                         # Show success message
                         st.success("✅ Text extracted successfully!")
